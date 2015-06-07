@@ -1,0 +1,7 @@
+name 'was61nd'
+maintainer 'Li Lin'
+maintainer_email 'lin.li@sc.com'
+license 'all_rights'
+description 'Installs Websphere Application Server 6.1 ND'
+long_description 'Installs Websphere Application Server 6.1 ND as root'
+version '0.1.0'

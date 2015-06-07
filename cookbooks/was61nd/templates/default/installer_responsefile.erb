@@ -1,0 +1,22 @@
+################################################################################
+#
+# V6.1 InstallShield Options File
+#
+#  cd <was61nd installer>/WAS
+#  ./install  -options <full path of this file> -silent
+#
+################################################################################
+
+-OPT silentInstallLicenseAcceptance="true"
+-OPT allowNonRootSilentInstall="false"
+-OPT disableOSPrereqChecking="true"
+-OPT installType="installNew"
+-OPT feature="noFeature"
+-OPT installLocation="<%= @install_location %>"	
+
+-OPT profileType="none"
+-OPT PROF_enableAdminSecurity="false"
+
+-OPT traceFormat=text
+-OPT traceLevel=CONFIG
+

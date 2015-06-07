@@ -1,0 +1,23 @@
+driver:
+  name: vagrant
+  synced_folders:
+    - ["/Users/lee/tmp/kitchen/sync", "/mnt/shared"]
+
+provisioner:
+  name: chef_zero
+
+platforms:
+  - name: centos-6.5
+    driver:
+      provider: parallels
+      box: parallels/centos-6.6
+      customize:
+        memsize: 1024
+        cpus: 1
+
+suites:
+  - name: default
+    run_list:
+      - recipe[was61nd::default]
+    attributes:
+      file_server_url: file:////mnt/shared/
