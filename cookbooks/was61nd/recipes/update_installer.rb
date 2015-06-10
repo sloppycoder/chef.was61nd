@@ -5,8 +5,9 @@
 #
 CACHE = Chef::Config[:file_cache_path]
 
+parent_dir = node[:was_updater_parent_dir]
 
-unless ::File.exists?(node[:was_updater_parent_dir])
+unless ::File.exists?("#{parent_dir}/UpdateInstaller")
 
   unpack_dir = ::File.join(CACHE, "update_installer")
 
@@ -18,10 +19,10 @@ unless ::File.exists?(node[:was_updater_parent_dir])
   if installer.start_with?("file://")
   	installer = installer.sub(/^file:\/\//, "")
   else 
-	remote_file installer do
-	  action :create_if_missing
-	  mode 0644
-	end
+  	remote_file installer do
+  	  action :create_if_missing
+  	  mode 0644
+  	end
   end 
 
   execute "untar #{installer}" do
@@ -32,7 +33,7 @@ unless ::File.exists?(node[:was_updater_parent_dir])
   template response_file do
     source "updater_responsefile.erb"
     variables({
-      :install_parent_dir => node[:was_updater_parent_dir]
+      :install_parent_dir => parent_dir
     })
   end
 
@@ -42,4 +43,5 @@ unless ::File.exists?(node[:was_updater_parent_dir])
     umask 0022
     command "./install -options #{response_file}  -silent "
   end
+
 end

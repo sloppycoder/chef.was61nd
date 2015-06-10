@@ -8,12 +8,12 @@ default[:was_updater_installer] = "was_update_installer_#{default[:was_updater_v
 default[:was_updater_parent_dir] = '/opt/IBM/WebSphere'
 
 default[:was_fixpack_ver] = '47'
-default[:was_fixpack_archive] = 'was_fp#{default[:was61nd_fixpack_ver]}.tar.gz'
+default[:was_fixpack_archive] = "was_fp#{default[:was_fixpack_ver]}.tar"
+default[:was_updater_package_dir] = "#{default[:was_updater_parent_dir]}/UpdateInstaller/maintenance/"
 
 default[:user] = 'wasadm'
 default[:group] = 'wasusers'
 default[:nfiles] = 8192
 default[:nprocs] = 1000000
-#default[:installer_location] = '/opt/IBM/WebSphere'
 
 

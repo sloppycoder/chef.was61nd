@@ -27,10 +27,10 @@ unless ::File.exists? was_home
   if installer.start_with?("file://")
   	installer = installer.sub(/^file:\/\//, "")
   else 
-	remote_file installer do
-	  action :create_if_missing
-	  mode 0644
-	end
+  	remote_file installer do
+  	  action :create_if_missing
+  	  mode 0644
+  	end
   end 
 
   execute "untar #{installer}" do
