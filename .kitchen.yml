@@ -19,5 +19,6 @@ suites:
   - name: default
     run_list:
       - recipe[was61nd::default]
+      - recipe[was61nd::update_installer]
     attributes:
       file_server_url: file:////mnt/shared/
