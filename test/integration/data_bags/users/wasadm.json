@@ -1,0 +1,10 @@
+{
+  "id": "wasadm",
+  "password": "$1$gt6We2dW$YNkBgQY5E5P6EdyDOBEkl/",
+  "groups": [ "wasadm" ],
+  "shell": "/bin/bash",
+  "action": "create",
+  "comment": "Websphere admin user",
+  "umask": "0022",
+  "ssh_keys" : "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCiWHcBW+QUMonvXC3YhMrYu4M9GI5rVNfeRgte8QG1R2tTrOWuwBR3/scmVGmlA9fqcLqxJktwsHX1Bml9i2SRidV1SGaSir4M8Ysj6fXDwIoNmITIsn0Yyf8artpmcm4VqTqipdqibWRWqdDx6XHSRrwu7O8Xa5Ykjnn36KTsxCRsy9Y5fGJAQVuTAol8T3iWPogoKbJ5B9BJbTvtdPSNVh1vlkxqEEIjPQBBam9AVYHVmHQR00oxlhPRo/UR5QaqygbdNC0xsbb32i5lp8vzZIGHVTwDcDGbJcnqdziifISs66sBoEqhXI73SpCNc1/c7fb4qkIDIn6Xq7hKiGEj lee@miso-2.local"
+}
