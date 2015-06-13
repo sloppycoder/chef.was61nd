@@ -1,0 +1,9 @@
+{
+  "id": "tst1",
+  "username": "tst1",
+  "password": "$1$gt6We2dW$YNkBgQY5E5P6EdyDOBEkl/",
+  "groups": [ "tst1" ],
+  "shell": "/bin/bash",
+  "umask": "0022",
+  "comment": "Websphere admin user"
+}

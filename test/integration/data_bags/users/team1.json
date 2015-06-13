@@ -1,0 +1,9 @@
+{
+  "id": "team1",
+  "username": "team1",
+  "password": "$1$gt6We2dW$YNkBgQY5E5P6EdyDOBEkl/",
+  "groups": [ "team1" ],
+  "shell": "/bin/bash",
+  "umask": "0022",
+  "comment": "Dev Team 1"
+}

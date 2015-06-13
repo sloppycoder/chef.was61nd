@@ -53,7 +53,7 @@ unless ::File.exist? was_home
     action :create
     recursive true
   end
- 
+
   execute 'install was' do
     cwd unpack_dir + '/WAS'
     user node[:user]
