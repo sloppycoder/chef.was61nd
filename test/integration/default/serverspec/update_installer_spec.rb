@@ -1,6 +1,6 @@
-require "spec_helper"
+require 'spec_helper'
 
-updater_home = "/opt/IBM/WebSphere/UpdateInstaller"
+updater_home = '/opt/IBM/WebSphere/UpdateInstaller'
 updater_ver = '7.0.0.37'
 
 describe file(updater_home) do
@@ -8,6 +8,5 @@ describe file(updater_home) do
 end
 
 describe command("#{updater_home}/bin/versionInfo.sh") do
-  its(:stdout) { should match /IBM Update Installer.*\n.*#{updater_ver}/ }
+  its(:stdout) { should match(/IBM Update Installer.*\n.*#{updater_ver}/) }
 end
-

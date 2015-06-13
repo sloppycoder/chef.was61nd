@@ -20,8 +20,9 @@ suites:
     data_bags_path: "test/integration/data_bags" 
     run_list:
       - recipe[was61nd::default]
-      - recipe[was61nd::update_installer]
-      - recipe[was61nd::fixpack]
-      - recipe[was61nd::user_setup]
+      # - recipe[was61nd::update_installer]
+      # - recipe[was61nd::fixpack]
+      # - recipe[was61nd::user_setup]
     attributes:
       file_server_url: file:////mnt/shared/
+      user: tst1
