@@ -5,21 +5,24 @@
 #
 CACHE = Chef::Config[:file_cache_path]
 
-was_home = node[:was_install_location]
-pak_dir = node[:was_updater_package_dir]
+attribs = node[:was61nd]
 
-installer = node[:file_server_url] + node[:was_fixpack_archive]
+was_home = attribs[:was_install_location]
+pak_dir = attribs[:was_updater_package_dir]
+
+installer = CACHE + '/' + attribs[:was_fixpack_archive]
 if installer.start_with?('file://')
   installer = installer.sub(%r{^file://}, '')
 else
   remote_file installer do
     action :create_if_missing
     mode 0644
+    source attribs[:file_server_url] + attribs[:was_fixpack_archive]
   end
 end
 
 execute "untar #{installer}" do
-  user node[:user]
+  user attribs[:user]
   umask 0022
   command "[ -d #{pak_dir} ] " # will return exit code 1 if dir does not exist
   command "rm -f #{pak_dir}/*.pak"
@@ -35,8 +38,8 @@ template response_file do
 end
 
 execute 'install fixpacks' do
-  cwd node[:was_updater_package_dir] + '/..'
-  user node[:user]
+  cwd attribs[:was_updater_package_dir] + '/..'
+  user attribs[:user]
   umask 0022
   command "./update.sh -silent -options #{response_file}"
 end

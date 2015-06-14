@@ -7,8 +7,8 @@
 include_recipe 'users'
 include_recipe 'ulimit'
 
-was_user = node[:user]
-was_group = node[:group]
+was_user = node[:was61nd][:user]
+was_group = node[:was61nd][:group]
 
 users_manage was_user do
   action :create

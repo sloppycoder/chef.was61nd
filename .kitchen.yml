@@ -22,7 +22,8 @@ suites:
       - recipe[was61nd::default]
       - recipe[was61nd::create_profile]
     attributes:
-      file_server_url: file:///mnt/shared/
-      user: tst1
-      group: tstgrp
-      profile_owner: team1
+      was61nd:
+        file_server_url: file:///mnt/shared/
+        user: tst1
+        group: tstgrp
+        profile_owner: team1

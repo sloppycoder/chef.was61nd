@@ -5,7 +5,9 @@
 #
 CACHE = Chef::Config[:file_cache_path]
 
-was_home = node[:was_install_location]
+attribs = node[:was61nd]
+
+was_home = attribs[:was_install_location]
 
 unless ::File.exist? was_home
 
@@ -23,13 +25,14 @@ unless ::File.exist? was_home
     action :create
   end
 
-  installer = node[:file_server_url] + node[:was_installer]
+  installer =  CACHE + '/' + attribs[:was_installer]
   if installer.start_with?('file://')
     installer = installer.sub(%r{^file://}, '')
   else
     remote_file installer do
       action :create_if_missing
       mode 0644
+      source attribs[:file_server_url] + attribs[:was_installer]
     end
   end
 
@@ -47,8 +50,8 @@ unless ::File.exist? was_home
   end
 
   directory "#{was_home}" do
-    owner node[:user]
-    group node[:user]
+    owner attribs[:user]
+    group attribs[:user]
     mode '0755'
     action :create
     recursive true
@@ -56,7 +59,7 @@ unless ::File.exist? was_home
 
   execute 'install was' do
     cwd unpack_dir + '/WAS'
-    user node[:user]
+    user attribs[:user]
     umask 0022
     command "./install -options #{response_file}  -silent "
   end

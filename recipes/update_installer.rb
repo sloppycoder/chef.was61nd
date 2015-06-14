@@ -5,7 +5,9 @@
 #
 CACHE = Chef::Config[:file_cache_path]
 
-parent_dir = node[:was_updater_parent_dir]
+attribs = node[:was61nd]
+
+parent_dir = attribs[:was_updater_parent_dir]
 
 unless ::File.exist?("#{parent_dir}/UpdateInstaller")
 
@@ -15,13 +17,14 @@ unless ::File.exist?("#{parent_dir}/UpdateInstaller")
     action :create
   end
 
-  installer = node[:file_server_url] + node[:was_updater_installer]
+  installer = CACHE + '/' + attribs[:was_updater_installer]
   if installer.start_with?('file://')
     installer = installer.sub(%r{^file://}, '')
   else
     remote_file installer do
       action :create_if_missing
       mode 0644
+      source attribs[:file_server_url] + attribs[:was_updater_installer]
     end
   end
 
@@ -39,8 +42,8 @@ unless ::File.exist?("#{parent_dir}/UpdateInstaller")
   end
 
   directory "#{parent_dir}/UpdateInstaller" do
-    owner node[:user]
-    group node[:user]
+    owner attribs[:user]
+    group attribs[:user]
     mode '0755'
     action :create
     recursive true
@@ -48,7 +51,7 @@ unless ::File.exist?("#{parent_dir}/UpdateInstaller")
 
   execute 'install update installer' do
     cwd unpack_dir + '/UpdateInstaller'
-    user node[:user]
+    user attribs[:user]
     umask 0022
     command "./install -options #{response_file}  -silent "
   end

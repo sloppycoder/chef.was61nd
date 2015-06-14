@@ -5,27 +5,35 @@
 #
 CACHE = Chef::Config[:file_cache_path]
 
-was_home = node[:was_install_location]
-was_user = node[:user]
-was_group = node[:group]
+attribs = node[:was61nd]
 
-profile_name = node[:profile_name] || 'AppSrv01'
-profile_path = node[:profile_path] || "#{was_home}/profiles/#{profile_name}"
-profile_type = node[:profile_type] || 'default'
-profile_start_port = node[:starting_port] || 9060
-profile_owner = node[:profile_owner]
+was_home = attribs[:was_install_location]
+was_user = attribs[:user]
+was_group = attribs[:group]
 
-execute "create new profile #{profile_name}" do
-  user was_user
-  umask 0022
-  cwd "#{was_home}/bin"
-  command %( \
-./manageprofiles.sh \
- -create \
- -profileName #{profile_name} \
- -profilePath #{profile_path} \
- -templatePath #{was_home}/profileTemplates/#{profile_type} \
- -startingPort #{profile_start_port})
+profile_name = attribs[:profile_name] || 'AppSrv01'
+profile_path = attribs[:profile_path] || "#{was_home}/profiles/#{profile_name}"
+profile_type = attribs[:profile_type] || 'default'
+profile_start_port = attribs[:starting_port] || 9060
+profile_owner = attribs[:profile_owner]
+
+execute 'check to see if hostname can be resolved' do
+  command 'hostname | xargs ping -c 1'
+end
+
+unless ::File.exist? profile_path
+  execute "create new profile #{profile_name}" do
+    user was_user
+    umask 0022
+    cwd "#{was_home}/bin"
+    command %( \
+  ./manageprofiles.sh \
+   -create \
+   -profileName #{profile_name} \
+   -profilePath #{profile_path} \
+   -templatePath #{was_home}/profileTemplates/#{profile_type} \
+   -startingPort #{profile_start_port})
+  end
 end
 
 if profile_owner && profile_owner != was_user
