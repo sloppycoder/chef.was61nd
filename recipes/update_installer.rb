@@ -7,9 +7,9 @@ CACHE = Chef::Config[:file_cache_path]
 
 attribs = node[:was61nd]
 
-parent_dir = attribs[:was_updater_parent_dir]
+updater_home = attribs[:updater_home]
 
-unless ::File.exist?("#{parent_dir}/UpdateInstaller")
+unless ::File.exist?(updater_home)
 
   unpack_dir = ::File.join(CACHE, 'update_installer')
 
@@ -17,14 +17,14 @@ unless ::File.exist?("#{parent_dir}/UpdateInstaller")
     action :create
   end
 
-  installer = CACHE + '/' + attribs[:was_updater_installer]
+  installer = CACHE + '/' + attribs[:updater_installer]
   if installer.start_with?('file://')
     installer = installer.sub(%r{^file://}, '')
   else
     remote_file installer do
       action :create_if_missing
       mode 0644
-      source attribs[:file_server_url] + attribs[:was_updater_installer]
+      source attribs[:file_server_url] + attribs[:updater_installer]
     end
   end
 
@@ -37,11 +37,12 @@ unless ::File.exist?("#{parent_dir}/UpdateInstaller")
   template response_file do
     source 'updater_responsefile.erb'
     variables(
-      install_parent_dir: parent_dir
+      install_location: updater_home,
+      allow_non_root: attribs[:updater_non_root] || 'false'
     )
   end
 
-  directory "#{parent_dir}/UpdateInstaller" do
+  directory updater_home do
     owner attribs[:user]
     group attribs[:user]
     mode '0755'

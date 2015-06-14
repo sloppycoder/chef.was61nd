@@ -1,8 +1,8 @@
 -OPT silentInstallLicenseAcceptance="true"
--OPT allowNonRootSilentInstall="true"
+-OPT allowNonRootSilentInstall="<%= @allow_non_root %>"
 -OPT disableOSPrereqChecking="true"
 -OPT checkFilePermissions="true" 
 -OPT disableNonBlockingPrereqChecking="true" 
--W product.location="<%= @install_parent_dir %>" 
+-OPT installLocation="<%= @install_location %>"	
 -W update.type="install"
 -OPT traceLevel=INFO
