@@ -5,8 +5,10 @@
 #
 CACHE = Chef::Config[:file_cache_path]
 
-attribs = node[:was61nd]
+attribs = node[:was61]
+
 pak_dir = attribs[:updater_package_dir]
+was_user = attribs[:install_non_root] ? attribs[:user] : 'root'
 
 installer = CACHE + '/' + attribs[:fixpack_tar]
 if installer.start_with?('file://')
@@ -20,7 +22,7 @@ else
 end
 
 execute "untar #{installer}" do
-  user attribs[:user]
+  user was_user
   umask 0022
   command "[ -d #{pak_dir} ] " # will return exit code 1 if dir does not exist
   command "rm -f #{pak_dir}/*.pak"
@@ -37,7 +39,7 @@ end
 
 execute 'install fixpacks' do
   cwd attribs[:updater_package_dir] + '/..'
-  user attribs[:user]
+  user was_user
   umask 0022
   command "./update.sh -silent -options #{response_file}"
 end

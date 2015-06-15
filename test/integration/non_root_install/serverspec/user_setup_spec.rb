@@ -2,7 +2,7 @@ require 'spec_helper'
 
 # test kitchen does not support using Chef attribute in tests
 # so the below are redundant of attributes of recipes.
-was_user = 'root'
+was_user = 'tst1'
 was_group = 'tstgrp'
 nfile = 8192
 nproc = 131_072

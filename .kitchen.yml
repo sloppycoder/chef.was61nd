@@ -22,8 +22,21 @@ suites:
       - recipe[was61nd::default]
       - recipe[was61nd::create_profile]
     attributes:
-      was61nd:
+      was61:
+        file_server_url: file:///mnt/shared/
+        group: tstgrp
+        install_non_root: false
+
+  - name: non_root_install
+    data_bags_path: "test/integration/data_bags" 
+    run_list:
+      - recipe[was61nd::default]
+      - recipe[was61nd::create_profile]
+    attributes:
+      was61:
         file_server_url: file:///mnt/shared/
         user: tst1
         group: tstgrp
         profile_owner: team1
+        install_non_root: true
+

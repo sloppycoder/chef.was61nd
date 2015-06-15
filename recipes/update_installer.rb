@@ -5,9 +5,10 @@
 #
 CACHE = Chef::Config[:file_cache_path]
 
-attribs = node[:was61nd]
+attribs = node[:was61]
 
 updater_home = attribs[:updater_home]
+was_user = attribs[:install_non_root] ? attribs[:user] : 'root'
 
 unless ::File.exist?(updater_home)
 
@@ -38,21 +39,23 @@ unless ::File.exist?(updater_home)
     source 'updater_responsefile.erb'
     variables(
       install_location: updater_home,
-      allow_non_root: attribs[:updater_non_root] || 'false'
+      allow_non_root: was_user == 'root' ? 'false' : 'true'
     )
   end
 
-  directory updater_home do
-    owner attribs[:user]
-    group attribs[:user]
-    mode '0755'
-    action :create
-    recursive true
+  if was_user != 'root'
+    directory updater_home do
+      owner attribs[:user]
+      group attribs[:user]
+      mode '0755'
+      action :create
+      recursive true
+    end
   end
 
   execute 'install update installer' do
     cwd unpack_dir + '/UpdateInstaller'
-    user attribs[:user]
+    user was_user
     umask 0022
     command "./install -options #{response_file}  -silent "
   end

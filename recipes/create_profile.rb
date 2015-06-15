@@ -5,10 +5,10 @@
 #
 CACHE = Chef::Config[:file_cache_path]
 
-attribs = node[:was61nd]
+attribs = node[:was61]
 
 was_home = attribs[:was_install_location]
-was_user = attribs[:user]
+was_user = attribs[:install_non_root] ? attribs[:user] : 'root'
 was_group = attribs[:group]
 
 profile_name = attribs[:profile_name] || 'AppSrv01'
@@ -48,10 +48,12 @@ if profile_owner && profile_owner != was_user
     members [profile_owner]
   end
 
-  cmd = "chown -R #{profile_owner}:#{profile_owner} #{profile_path}"
-  execute cmd do
-    command cmd
-    user 'root'
-    action :run
+  if was_user != 'root'
+    cmd = "chown -R #{profile_owner}:#{profile_owner} #{profile_path}"
+    execute cmd do
+      command cmd
+      user 'root'
+      action :run
+    end
   end
 end

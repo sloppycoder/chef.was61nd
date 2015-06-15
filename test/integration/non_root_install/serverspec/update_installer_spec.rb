@@ -4,7 +4,7 @@ require 'spec_helper'
 # so the below are redundant of attributes of recipes.
 updater_home = '/opt/IBM/WebSphere/UpdateInstaller'
 updater_ver = '7.0.0.37'
-was_user = 'root'
+was_user = 'tst1'
 
 describe file(updater_home) do
   it { should be_directory }

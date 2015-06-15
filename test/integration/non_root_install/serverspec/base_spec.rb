@@ -4,7 +4,7 @@ require 'spec_helper'
 # so the below are redundant of attributes of recipes.
 was_home = '/opt/IBM/WebSphere/AppServer'
 was_ver = '6.1'
-was_user = 'root'
+was_user = 'tst1'
 
 if %w(redhat, centos).include?(os[:family])
   describe package('compat-db') do

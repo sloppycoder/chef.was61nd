@@ -4,7 +4,7 @@ require 'spec_helper'
 # so the below are redundant of attributes of recipes.
 profile_home = '/opt/IBM/WebSphere/AppServer/profiles/AppSrv01'
 profile_port = 9060
-profile_owner = 'root'
+profile_owner = 'team1'
 was_group = 'tstgrp'
 
 describe user(profile_owner) do

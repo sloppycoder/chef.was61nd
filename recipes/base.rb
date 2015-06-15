@@ -5,9 +5,10 @@
 #
 CACHE = Chef::Config[:file_cache_path]
 
-attribs = node[:was61nd]
+attribs = node[:was61]
 
 was_home = attribs[:was_install_location]
+was_user = attribs[:install_non_root] ? attribs[:user] : 'root'
 
 unless ::File.exist? was_home
 
@@ -41,25 +42,28 @@ unless ::File.exist? was_home
     command "tar zxf #{installer} -C #{unpack_dir}"
   end
 
-  response_file = ::File.join(CACHE, 'responsefile_was61nd.txt')
+  response_file = ::File.join(CACHE, 'responsefile_installer.txt')
   template response_file do
     source 'installer_responsefile.erb'
     variables(
-      install_location: was_home
+      install_location: was_home,
+      allow_non_root: was_user == 'root' ? 'false' : 'true'
     )
   end
 
-  directory "#{was_home}" do
-    owner attribs[:user]
-    group attribs[:user]
-    mode '0755'
-    action :create
-    recursive true
+  if was_user != 'root'
+    directory "#{was_home}" do
+      owner attribs[:user]
+      group attribs[:user]
+      mode '0755'
+      action :create
+      recursive true
+    end
   end
 
   execute 'install was' do
     cwd unpack_dir + '/WAS'
-    user attribs[:user]
+    user was_user
     umask 0022
     command "./install -options #{response_file}  -silent "
   end
