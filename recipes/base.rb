@@ -3,21 +3,20 @@
 # Recipe:: base
 #
 #
-CACHE = Chef::Config[:file_cache_path]
+CACHE = Chef::Config['file_cache_path']
 
-attribs = node[:was61]
+attribs = node['was61']
 
-was_home = attribs[:was_install_location]
-was_user = attribs[:install_non_root] ? attribs[:user] : 'root'
+was_home = attribs['was_install_location']
+was_user = attribs['install_non_root'] ? attribs['user'] : 'root'
 
 unless ::File.exist? was_home
 
   # install the rpm packages required to IBM JRE
-  if platform?('redhat', 'centos')
-    package ['compat-db', 'compat-libstdc++-33'] do
-      arch 'i686'
-      action :install
-    end
+  package ['compat-db', 'compat-libstdc++-33'] do
+    arch 'i686'
+    action :install
+    only_if { platform?('redhat', 'centos', 'amazon', 'scientific') }
   end
 
   unpack_dir = ::File.join(CACHE, 'was_installer')
@@ -26,14 +25,14 @@ unless ::File.exist? was_home
     action :create
   end
 
-  installer =  CACHE + '/' + attribs[:was_installer]
+  installer =  CACHE + '/' + attribs['was_installer']
   if installer.start_with?('file://')
     installer = installer.sub(%r{^file://}, '')
   else
     remote_file installer do
       action :create_if_missing
       mode 0644
-      source attribs[:file_server_url] + attribs[:was_installer]
+      source attribs['file_server_url'] + attribs['was_installer']
     end
   end
 
@@ -51,14 +50,13 @@ unless ::File.exist? was_home
     )
   end
 
-  if was_user != 'root'
-    directory "#{was_home}" do
-      owner attribs[:user]
-      group attribs[:user]
-      mode '0755'
-      action :create
-      recursive true
-    end
+  directory was_home do
+    owner attribs['user']
+    group attribs['user']
+    mode '0755'
+    action :create
+    recursive true
+    only_if { was_user != 'root' }
   end
 
   execute 'install was' do

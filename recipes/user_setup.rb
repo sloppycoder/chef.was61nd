@@ -7,14 +7,13 @@
 include_recipe 'users'
 include_recipe 'ulimit'
 
-running_non_root = node[:was61][:install_non_root]
-was_user =  running_non_root ? node[:was61][:user] : 'root'
-was_group = node[:was61][:group]
+running_non_root = node['was61']['install_non_root']
+was_user =  running_non_root ? node['was61']['user'] : 'root'
+was_group = node['was61']['group']
 
-if was_user != 'root'
-  users_manage was_user do
-    action :create
-  end
+users_manage was_user do
+  action :create
+  only_if { was_user != 'root' }
 end
 
 unless %w(root, wheel).include?(was_group)
